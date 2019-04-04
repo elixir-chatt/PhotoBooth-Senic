@@ -1,3 +1,3 @@
 # PhotoBooth-Senic
 
-*It's a thing*
+It's a photo taker.
