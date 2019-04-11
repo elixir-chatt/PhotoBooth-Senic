@@ -75,5 +75,4 @@ defmodule Pex.Core.PhotoBooth do
     change_mode(booth, :ready)
   end
   def finish(booth), do: booth
-  
 end
