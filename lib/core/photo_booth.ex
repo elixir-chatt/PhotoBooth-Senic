@@ -30,6 +30,7 @@ defmodule Pex.Core.PhotoBooth do
     |> change_mode(:countdown)
   end
   
+  def start(booth), do: booth
   
   def countdown(%{seconds_to_countdown: 0} = booth) do
     booth
