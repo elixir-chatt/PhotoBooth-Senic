@@ -3,14 +3,6 @@ defmodule BoundaryTest do
   alias Pex.Boundary.Camera
   alias Pex.Test.Support.Utilities
 
-  test "take picture" do
-    camera =
-      %Camera{}
-      |> Camera.take_picture
-
-    assert camera.picture == "photo1.jpg"
-  end
-
   test "take picture2" do
     %Camera{}
     |> Camera.take_picture
