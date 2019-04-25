@@ -1,7 +1,7 @@
 defmodule BoundaryTest do
   use ExUnit.Case
-  alias Pex.Boundary.Camera, as: Camera
-  alias Pex.Test.Support.Utilities, as: Utilities
+  alias Pex.Boundary.Camera
+  alias Pex.Test.Support.Utilities
 
   test "take picture" do
     camera =
