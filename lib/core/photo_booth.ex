@@ -42,7 +42,7 @@ defmodule Pex.Core.PhotoBooth do
     %{booth | seconds_to_countdown: booth.seconds_to_countdown-1 }
   end
 
-  def take_picture(booth, photo) do
+  def add_taken_photo(booth, photo) do
     booth
     |> Map.put(:photos, [photo | booth.photos])
     |> Map.put(:taken, booth.taken + 1)
@@ -54,6 +54,7 @@ defmodule Pex.Core.PhotoBooth do
     |> Map.put(:taken, 0)
     |> change_mode(:choosing)
   end
+
   def advance_from_shooting(booth) do
     booth
     |> change_mode(:countdown)
@@ -75,5 +76,6 @@ defmodule Pex.Core.PhotoBooth do
   def finish(%{mode: :transmitting}=booth) do
     change_mode(booth, :ready)
   end
+  
   def finish(booth), do: booth
 end

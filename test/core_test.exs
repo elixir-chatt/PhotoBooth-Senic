@@ -7,11 +7,11 @@ defmodule CoreTest do
   def full() do
     PhotoBooth.new
     |> PhotoBooth.start
-    |> PhotoBooth.take_picture(<<>>)
-    |> PhotoBooth.take_picture(<<>>)
-    |> PhotoBooth.take_picture(<<>>)
-    |> PhotoBooth.take_picture(<<>>)
-    |> PhotoBooth.take_picture(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
   end
 
   test "test defaults" do
@@ -49,9 +49,9 @@ defmodule CoreTest do
 
   test "test take pictures" do
     default()
-    |> PhotoBooth.take_picture(<<>>)
-    |> PhotoBooth.take_picture(<<>>)
-    |> PhotoBooth.take_picture(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
+    |> PhotoBooth.add_taken_photo(<<>>)
     |> assert_key(:photos, [<<>>, <<>>, <<>>])
     |> assert_key(:taken, 3)
   end
