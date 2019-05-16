@@ -3,15 +3,17 @@ defmodule CoreTest do
   alias Pex.Core.PhotoBooth
 
   def default(), do: PhotoBooth.new
+  
+  def photo(), do: <<>>
 
   def full() do
     PhotoBooth.new
     |> PhotoBooth.start
-    |> PhotoBooth.add_taken_photo(<<>>)
-    |> PhotoBooth.add_taken_photo(<<>>)
-    |> PhotoBooth.add_taken_photo(<<>>)
-    |> PhotoBooth.add_taken_photo(<<>>)
-    |> PhotoBooth.add_taken_photo(<<>>)
+    |> PhotoBooth.add_taken_photo(photo())
+    |> PhotoBooth.add_taken_photo(photo())
+    |> PhotoBooth.add_taken_photo(photo())
+    |> PhotoBooth.add_taken_photo(photo())
+    |> PhotoBooth.add_taken_photo(photo())
   end
 
   test "test defaults" do
@@ -49,10 +51,10 @@ defmodule CoreTest do
 
   test "test take pictures" do
     default()
-    |> PhotoBooth.add_taken_photo(<<>>)
-    |> PhotoBooth.add_taken_photo(<<>>)
-    |> PhotoBooth.add_taken_photo(<<>>)
-    |> assert_key(:photos, [<<>>, <<>>, <<>>])
+    |> PhotoBooth.add_taken_photo(photo())
+    |> PhotoBooth.add_taken_photo(photo())
+    |> PhotoBooth.add_taken_photo(photo())
+    |> assert_key(:photos, [photo(), photo(), photo()])
     |> assert_key(:taken, 3)
   end
 
