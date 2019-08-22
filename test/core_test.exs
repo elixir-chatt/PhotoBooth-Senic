@@ -87,12 +87,6 @@ defmodule CoreTest do
     |> assert_key(:chosen, [])
   end
 
-  test "test functions do not fire unless in appropriate state" do
-    booth = full()
-    assert PhotoBooth.start(booth) == booth
-    assert PhotoBooth.finish(booth) == booth
-  end
-
 
   defp assert_key(booth, key, actual) do
     expected = Map.get(booth, key)

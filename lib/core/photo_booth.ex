@@ -30,8 +30,6 @@ defmodule Pex.Core.PhotoBooth do
     |> change_mode(:countdown)
   end
 
-  def start(booth), do: booth
-
   def countdown(%{seconds_to_countdown: 0} = booth) do
     booth
     |> change_mode(:shooting)
@@ -64,14 +62,13 @@ defmodule Pex.Core.PhotoBooth do
     booth
     |> Map.put(:chosen, choices)
     |> transmit
-    |> change_mode(:transmitting)
   end
 
   def change_mode(booth, mode) do
     %{booth | mode: mode }
   end
 
-  def transmit(booth), do: booth
+  def transmit(booth), do: change_mode(booth, :transmitting)
 
   def finish(%{mode: :transmitting}=booth) do
     change_mode(booth, :ready)
