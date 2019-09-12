@@ -16,6 +16,12 @@ defmodule CoreTest do
     |> PhotoBooth.add_taken_photo(photo())
   end
 
+  def almost_empty() do
+    PhotoBooth.new
+    |> PhotoBooth.start
+    |> PhotoBooth.add_taken_photo(photo())
+  end
+
   test "test defaults" do
     default()
     |> assert_key(:troll, false)
@@ -72,13 +78,19 @@ defmodule CoreTest do
 
   test "test start choosing mode" do
     full()
-    |> PhotoBooth.choose([1,2,3])
+    |> PhotoBooth.choose(:accept)
+    |> assert_key(:mode, :choosing)
+  end
+
+  test "test almost empty choosing mode" do
+    almost_empty()
+    |> PhotoBooth.choose(:reject)
     |> assert_key(:mode, :transmitting)
   end
 
   test "test proper finish" do
-    full()
-    |> PhotoBooth.choose([1,2,3])
+    almost_empty()
+    |> PhotoBooth.choose(:accept)
     |> PhotoBooth.finish
     |> PhotoBooth.start
     |> assert_key(:seconds_to_countdown, 3)
