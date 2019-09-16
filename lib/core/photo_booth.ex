@@ -1,6 +1,6 @@
 defmodule Pex.Core.PhotoBooth do
-  defstruct [:mode, :photo, :troll, :seconds_to_countdown, :taken, :photos, :chosen]
-  @max_seconds_to_countdown 3
+  defstruct [:mode, :photo, :troll, :countdown_list, :taken, :photos, :chosen]
+  @max_countdown_list 3
   @pictures_to_take 5
 
   def new do
@@ -9,7 +9,7 @@ defmodule Pex.Core.PhotoBooth do
       mode: :ready,
       photo: <<>>,
       troll: false,
-      seconds_to_countdown: @max_seconds_to_countdown,
+      countdown_list: make_countdown(@max_countdown_list),
       taken: 0,
       photos: [],
       chosen: []
@@ -22,18 +22,18 @@ defmodule Pex.Core.PhotoBooth do
   end
 
   def start(%{mode: :ready} = booth) do
-    %{booth | seconds_to_countdown: @max_seconds_to_countdown, taken: 0, photos: [], chosen: []}
+    %{booth | countdown_list: make_countdown(@max_countdown_list), taken: 0, photos: [], chosen: []}
     |> change_mode(:countdown)
   end
 
-  def countdown(%{seconds_to_countdown: 0} = booth) do
+  def countdown(%{countdown_list: []} = booth) do
     booth
     |> change_mode(:shooting)
-    |> Map.put(:seconds_to_countdown, @max_seconds_to_countdown)
+    |> Map.put(:countdown_list, make_countdown(@max_countdown_list))
   end
 
-  def countdown(booth) do
-    %{booth | seconds_to_countdown: booth.seconds_to_countdown - 1}
+  def countdown(%{countdown_list: [_head|tail]}=booth) do
+    %{booth | countdown_list: tail}
   end
 
   def add_taken_photo(booth, photo) do
@@ -77,4 +77,15 @@ defmodule Pex.Core.PhotoBooth do
   end
 
   def finish(booth), do: booth
+  
+  def make_countdown_tuple(x) do 
+    {x,1000}
+  end 
+  
+  def make_countdown(max) do
+    (max..1)
+    |> Enum.map(&make_countdown_tuple/1)
+  end
 end
+
+
