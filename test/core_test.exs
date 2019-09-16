@@ -4,12 +4,12 @@ defmodule CoreTest do
   
   @default_countdown [{3, 1000}, {2, 1000}, {1, 1000}]
 
-  def default(), do: PhotoBooth.new
+  def default(), do: PhotoBooth.new(false)
   
   def photo(), do: <<>>
 
   def full() do
-    PhotoBooth.new
+    PhotoBooth.new(false)
     |> PhotoBooth.start
     |> PhotoBooth.add_taken_photo(photo())
     |> PhotoBooth.add_taken_photo(photo())
@@ -19,7 +19,7 @@ defmodule CoreTest do
   end
 
   def almost_empty() do
-    PhotoBooth.new
+    PhotoBooth.new(false)
     |> PhotoBooth.start
     |> PhotoBooth.add_taken_photo(photo())
   end
@@ -60,7 +60,7 @@ defmodule CoreTest do
   test "make countdown" do
     expected = [{6, 1000}, {5, 1000}, {4, 1000}, {3, 1000}, {2, 1000}, {1, 1000}]
 
-    assert PhotoBooth.make_countdown(6) == expected
+    assert PhotoBooth.make_countdown(6, false) == expected
   end
 
   test "take pictures" do
@@ -105,6 +105,13 @@ defmodule CoreTest do
     |> assert_key(:taken, 0)
     |> assert_key(:photos, [])
     |> assert_key(:chosen, [])
+  end
+  
+  test "troll counts don't break" do
+    Enum.each((1..100), fn x -> 
+      assert is_list PhotoBooth.make_countdown(x, true)
+    end)
+    
   end
 
 

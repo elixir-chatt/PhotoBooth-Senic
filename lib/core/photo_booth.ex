@@ -3,13 +3,13 @@ defmodule Pex.Core.PhotoBooth do
   @max_countdown_list 3
   @pictures_to_take 5
 
-  def new do
+  def new(troll) do
     %__MODULE__{
       # :ready, :countdown, :shooting, :choosing, :transmitting
       mode: :ready,
       photo: <<>>,
-      troll: false,
-      countdown_list: make_countdown(@max_countdown_list),
+      troll: troll,
+      countdown_list: make_countdown(@max_countdown_list, troll),
       taken: 0,
       photos: [],
       chosen: []
@@ -22,14 +22,20 @@ defmodule Pex.Core.PhotoBooth do
   end
 
   def start(%{mode: :ready} = booth) do
-    %{booth | countdown_list: make_countdown(@max_countdown_list), taken: 0, photos: [], chosen: []}
+    %{
+      booth | 
+        countdown_list: make_countdown(@max_countdown_list, booth.troll), 
+        taken: 0, 
+        photos: [], 
+        chosen: []
+    }
     |> change_mode(:countdown)
   end
 
   def countdown(%{countdown_list: []} = booth) do
     booth
     |> change_mode(:shooting)
-    |> Map.put(:countdown_list, make_countdown(@max_countdown_list))
+    |> Map.put(:countdown_list, make_countdown(@max_countdown_list, booth.troll))
   end
 
   def countdown(%{countdown_list: [_head|tail]}=booth) do
@@ -78,13 +84,26 @@ defmodule Pex.Core.PhotoBooth do
 
   def finish(booth), do: booth
   
-  def make_countdown_tuple(x) do 
+  def make_nice_countdown_tuple(x) do 
     {x,1000}
   end 
+
+  def make_troll_countdown_tuple(_x) do 
+    {:random.uniform(10) - 1, :random.uniform(600)}
+  end 
   
-  def make_countdown(max) do
+  def make_countdown(max, false=_troll) do
     (max..1)
-    |> Enum.map(&make_countdown_tuple/1)
+    |> Enum.map(&make_nice_countdown_tuple/1)
+  end
+
+  def make_countdown(max, true=_troll) do
+    number = :random.uniform(max)
+    
+    ((number * number)..1)
+    |> Enum.to_list
+    |> tl
+    |> Enum.map(&make_troll_countdown_tuple/1)
   end
 end
 
